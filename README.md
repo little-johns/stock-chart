@@ -1,39 +1,18 @@
-# Project Name
+# Stock Chart Module
 
-> Project description
+> Little John's main stock graph. 
 
-## Related Projects
+## Crud API
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+### 1. CREATE
+```POST - /api/stocks/:stockId```
 
-## Table of Contents
+### 2. READ
+```GET - /api/stocks/:stockId```
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+### 3. UPDATE
+```PATCH - /api/stocks/:stockId```
 
-## Usage
-
-> Some usage instructions
-
-## Requirements
-
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
-- Node 6.13.0
-- etc
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
-```
+### 4. DELETE
+```DELETE - /api/stocks/:stockId```
 

@@ -26,3 +26,4 @@ build/
 # Examples of code from Hack Reactor
 example/
 
+public/dist/bundle.js
