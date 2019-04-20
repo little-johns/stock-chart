@@ -1,5 +1,5 @@
 const faker = require('faker');
-
+const fs = require('fs');
 
 const generateMassiveData = () => {  
   const companyData = [
@@ -144,30 +144,45 @@ const generateMassiveData = () => {
     }
   } 
 
-
-  for (let i = 1; i <= 5000000; i += 1) {
-    let entry = {
-      id: i,
-      stockId: tickers[i - 1],
-      stockInfo: {
-        stockCompany: companyData[Math.floor(Math.random() * 100)].company,
-        relatedTags: generateTags(generateInBetween(2, 5, 'integer')),
-        noOfOwners: faker.random.number(),
-        recommendationPercent: generateInBetween(30, 90, 'interger'),
-      },
-      stockData: {
-        day: generateDataPoints(),
-        week: generateDataPoints(),
-        month: generateDataPoints(),
-        threeMonth: generateDataPoints(),
-        year: generateDataPoints(),
-        fiveYear: generateDataPoints()
-      },
-      averageStock: generateInBetween(90, 200).toFixed(2),
-      changePercent: generateInBetween(1, 4).toFixed(2)
+  const stringifySQLArray = array => {
+    let result = '{';
+    for (let i = 0; i < array.length; i += 1) {
+      result += `${array[i]},`;
     }
-    console.log(JSON.stringify(entry));
+    result += '}';
+    return result;
   }
+
+  let stream = new WritableStream('data.csv');
+  let ok = true;
+  let max = 10000000;
+  let i = 0;
+  const write = () => {
+    ok = true;
+    while (ok && i < max) {
+      i += 1;
+      let line = '';
+      line += `${i}|`;
+      line += `${tickers[i - 1]}|`;
+      line += `${companyData[Math.floor(Math.random() * 100)].company}|`;
+      line += `${stringifySQLArray(generateTags(generateInBetween(2, 5, 'integer')))}|`;
+      line += `${faker.random.number()}|`;
+      line += `${generateInBetween(30, 90, 'interger')}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${stringifySQLArray(generateDataPoints())}|`;
+      line += `${generateInBetween(90, 200).toFixed(2)}|`;
+      line += `${generateInBetween(1, 4).toFixed(2)}|`;
+      ok = stream.write(line + '\n');
+    }
+    if (!ok) {
+      stream.once('drain', write);
+    }
+  }
+  write();
 };
 
 
