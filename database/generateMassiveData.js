@@ -153,7 +153,9 @@ const generateMassiveData = () => {
     return result;
   }
 
-  let stream = new WritableStream('data.csv');
+  let stream = fs.createWriteStream('data.csv');
+  let line = 'id|stockId|stockCompany|relatedTags|noOfOwners|recommendationPercent|day|week|month|threeMonth|year|fiveYear|averageStock|changePercent\n'
+  stream.write(line);
   let ok = true;
   let max = 10000000;
   let i = 0;
@@ -161,7 +163,7 @@ const generateMassiveData = () => {
     ok = true;
     while (ok && i < max) {
       i += 1;
-      let line = '';
+      line = '';
       line += `${i}|`;
       line += `${tickers[i - 1]}|`;
       line += `${companyData[Math.floor(Math.random() * 100)].company}|`;
