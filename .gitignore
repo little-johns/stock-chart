@@ -27,3 +27,6 @@ build/
 example/
 
 public/dist/bundle.js
+config.js
+database/data.csv
+database/test.csv
