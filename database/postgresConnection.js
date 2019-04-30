@@ -1,13 +1,10 @@
-const pg = require('pg');
+const Sequelize = require('sequelize');
 const { POSTGRES_USER, POSTGRES_PASSWORD } = require('../config.js');
-// const connectionString = 'postgres://localhost:5432/stock-chart'
 
-const client = new pg.Client({
+const sequelize = new Sequelize('stockchart', POSTGRES_USER, POSTGRES_PASSWORD, {
   host: 'localhost',
-  port: 5432,
-  user: POSTGRES_USER,
-  password: POSTGRES_PASSWORD,
-  database: 'stockchart'
+  port: '5432',
+  dialect: 'postgres'
 });
 
-client.connect(err => {if (err) console.error(err.stack)});
+exports.sequelize = sequelize;

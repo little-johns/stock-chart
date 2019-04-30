@@ -1,14 +1,14 @@
 const Sequelize = require('sequelize');
+const Pool = require('pg').Pool;
+
+const pgConnection = require('./postgresConnection.js');
 const { POSTGRES_USER, POSTGRES_PASSWORD } = require('../config.js');
 
-const sequelize = new Sequelize('stockchart', POSTGRES_USER, POSTGRES_PASSWORD, {
-  host: 'localhost',
-  port: '5432',
-  dialect: 'postgres'
-});
+const sequelize = pgConnection.sequelize;
 
-class Stock extends Sequelize.Model {}
-Stock.init({
+// class Stock extends Sequelize.Model {}
+exports.Stock = sequelize.define('Stock', {
+// Stock.init({
   id: {type: Sequelize.INTEGER, primaryKey: true },
   stockId: Sequelize.TEXT,
   stockCompany: Sequelize.TEXT,
@@ -23,12 +23,30 @@ Stock.init({
   fiveYear: Sequelize.ARRAY(Sequelize.FLOAT),
   averageStock: Sequelize.FLOAT,
   changePercent: Sequelize.FLOAT,
-}, { sequelize, modelName: 'stock', timestamps: false });
+})//, { sequelize, modelName: 'stock', timestamps: false });
 
-const dataPath = 'c:/Users/chris/HackReactor/SDC/stock-chart/database/data.csv';
 
-sequelize.sync({ force: true })
-  .then(() => sequelize.query(`COPY stocks FROM '${dataPath}' DELIMITER('|') CSV HEADER;`)
-    .then(() => console.log('done'))
-  );
- 
+const pool = new Pool({
+  user: POSTGRES_USER,
+  host: 'localhost',
+  database: 'stockchart',
+  password: POSTGRES_PASSWORD,
+  port: 5432,
+})
+
+exports.getStock = (id, cb) => {
+  let query = '';
+  if (parseInt(id)) {
+    query = `SELECT * FROM stocks WHERE id=${id};`;
+  } else {
+    query = `SELECT * FROM stocks WHERE "stockId"='${id}';`
+  }
+  pool.query(query, (err, res) => {
+    if (err || !res.rows.length) {
+      cb(err);
+    } else {
+      let result = res.rows[0];
+      cb(null, result);
+    }
+  });
+}
