@@ -24,6 +24,8 @@
     "axios": "^0.18.0",
     "babel-runtime": "^6.26.0",
     "body-parser": "^1.18.3",
+    "cassandra-driver": "^4.0.0",
+    "cassandrom": "0.0.4",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "faker": "^4.1.0",
@@ -33,12 +35,15 @@
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.20",
     "path": "^0.12.7",
+    "pg": "^7.10.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-odometerjs": "^2.1.1",
     "react-router": "^5.0.0",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.0",
+    "redis": "^2.8.0",
+    "sequelize": "^5.7.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -64,6 +69,7 @@
     "file-loader": "^3.0.1",
     "jest": "^24.5.0",
     "mongodb-memory-server": "^4.2.1",
+    "newrelic": "^5.7.0",
     "style-loader": "^0.23.1",
     "supertest": "^4.0.2",
     "webpack": "^4.29.6",
