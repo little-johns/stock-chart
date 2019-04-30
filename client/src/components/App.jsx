@@ -27,6 +27,30 @@ class App extends React.Component {
     const { stockId } = this.props.match ? this.props.match.params : { stockId: null };
     API.get((stockId && `/api/${stockId}`) || `/api/TSLA`)
     .then((response) => {
+      response.data[0].stockInfo = {
+        stockCompany: response.data[0].stockCompany,
+        relatedTags: response.data[0].relatedTags,
+        noOfOwners: response.data[0].noOfOwners,
+        recommendationPercent: response.data[0].recommendationPercent,
+      };
+      response.data[0].stockData = {
+        day: response.data[0].day,
+        week: response.data[0].week,
+        month: response.data[0].month,
+        threeMonth: response.data[0].threeMonth,
+        year: response.data[0].year,
+        fiveYear: response.data[0].fiveYear,
+      };
+      delete response.data[0].stockCompany;
+      delete response.data[0].relatedTags;
+      delete response.data[0].noOfOwners;
+      delete response.data[0].recommendationPercent;
+      delete response.data[0].day;
+      delete response.data[0].week;
+      delete response.data[0].month;
+      delete response.data[0].threeMonth;
+      delete response.data[0].year;
+      delete response.data[0].fiveYear;
       this.setState({
         stockInfo: response.data[0].stockInfo,
         chartData: response.data[0].stockData,
